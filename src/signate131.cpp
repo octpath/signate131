@@ -88,7 +88,7 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc3(py::array_t<f
 }
 
 // x20, 1cat
-std::vector<std::map<int, std::vector<std::vector<int> > > > proc4(py::array_t<float> input){
+std::map<int, std::vector<std::vector<int> > > proc4(py::array_t<float> input){
     auto data = input.unchecked<2>();
     std::map<int, std::vector<std::vector<int> > > results;
     for (py::ssize_t row = 0; row < data.shape(0); ++row){
