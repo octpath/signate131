@@ -60,7 +60,7 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc2(py::array_t<f
             }
             if (flag) {
                 for (int scale_f=0; scale_f<20; ++scale_f){
-                    results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(data.shape(1) - 1)});
+                    results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(data.shape(1)) - 1});
                 }
             }
         }
