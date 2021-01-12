@@ -77,7 +77,7 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc2_with_scale(py
             bool flag = false;
             int start = -1;
             for (py::ssize_t col = 0; col < data.shape(1); ++col){
-                auto ref_val = data(row, col, cat)
+                auto ref_val = data(row, col, cat);
                 if ((ref_val >= 0.5) && (!flag)) {
                     flag = true;
                     start = col;
