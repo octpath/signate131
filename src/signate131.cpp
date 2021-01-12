@@ -32,7 +32,7 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc(py::array_t<fl
             }
         }
     }
-    results[1][10000].push_back(std::vector<int>{0, 9999})
+    results[1][10000].push_back(std::vector<int>{0, 9999});
     return results;
 }
 
