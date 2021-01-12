@@ -69,7 +69,7 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc2(py::array_t<f
 }
 
 // x20
-std::vector<std::map<int, std::vector<std::vector<int> > > > proc_x20(std::vector<float> &input){
+std::vector<std::map<int, std::vector<std::vector<int> > > > proc_x20(py::array_t<float> &input){
     auto data = input.unchecked<3>();
     std::vector<std::map<int, std::vector<std::vector<int> > > > results(3);
     for (py::ssize_t cat = 0; cat < 3; ++cat){
