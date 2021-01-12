@@ -32,7 +32,6 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc(py::array_t<fl
             }
         }
     }
-    results[1][10000].push_back(std::vector<int>{0, 9999});
     return results;
 }
 
@@ -54,14 +53,14 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc2(py::array_t<f
                     if (flag) {
                         flag = false;
                         for (int scale_f=0; scale_f<20; ++scale_f){
-                            results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*((int)(col) - 1)});
+                            results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(col) - 1});
                         }
                     }
                 }
             }
             if (flag) {
                 for (int scale_f=0; scale_f<20; ++scale_f){
-                    results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*((int)(data.shape(1)) - 1)});
+                    results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(data.shape(1) - 1)});
                 }
             }
         }
@@ -76,7 +75,7 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc3(py::array_t<f
     for (py::ssize_t cat = 0; cat < 3; cat++){
         for (py::ssize_t row = 0; row < r.shape(0); row++){
             for (py::ssize_t col = 0; col < r.shape(1); col++){
-                if (r(row, col, cat) > 0.5){
+                if (r(row, col, cat) >= 0.5){
                     for (int scale_f=0; scale_f<20; scale_f++){
                         results[cat][20*row+scale_f].push_back(
                             std::vector<int>{20*(int)(col), 20*(int)(col)+19});
