@@ -102,32 +102,30 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc_x20(py::array_
 }
 
 // x20bool
-std::vector<std::map<int, std::vector<std::vector<int> > > > proc_x20bool(py::array_t<bool> input){
-    auto data = input.unchecked<3>();
-    std::vector<std::map<int, std::vector<std::vector<int> > > > results(3);
-    for (py::ssize_t cat = 0; cat < 3; ++cat){
-        for (py::ssize_t row = 0; row < data.shape(0); ++row){
-            bool flag = false;
-            int start = -1;
-            for (py::ssize_t col = 0; col < data.shape(1); ++col){
-                if (data(row, col, cat)){
-                    if (!flag) {
-                        flag = true;
-                        start = col;
-                    }
-                } else {
-                    if (flag) {
-                        flag = false;
-                        for (int scale_f=0; scale_f<20; ++scale_f){
-                            results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(col) - 1});
-                        }
+std::map<int, std::vector<std::vector<int> > > proc_x20each(py::array_t<float> input){
+    auto data = input.unchecked<2>();
+    std::map<int, std::vector<std::vector<int> > > results;
+    for (py::ssize_t row = 0; row < data.shape(0); ++row){
+        bool flag = false;
+        int start = -1;
+        for (py::ssize_t col = 0; col < data.shape(1); ++col){
+            if (data(row, col) >= 0.5){
+                if (!flag) {
+                    flag = true;
+                    start = col;
+                }
+            } else {
+                if (flag) {
+                    flag = false;
+                    for (int scale_f=0; scale_f<20; ++scale_f){
+                        results[20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(col) - 1});
                     }
                 }
             }
-            if (flag) {
-                for (int scale_f=0; scale_f<20; ++scale_f){
-                    results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(data.shape(1)) - 1});
-                }
+        }
+        if (flag) {
+            for (int scale_f=0; scale_f<20; ++scale_f){
+                results[20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(data.shape(1)) - 1});
             }
         }
     }
@@ -139,5 +137,5 @@ PYBIND11_MODULE(signate131, m){
     m.def("proc", &proc, "naive");
     m.def("proc2", &proc2, "x20 (legacy)");
     m.def("proc_x20", &proc_x20, "x20 rename");
-    m.def("proc_x20bool", &proc_x20bool, "x20 bool");
+    m.def("proc_x20each", &proc_x20each, "x20 each");
 }
