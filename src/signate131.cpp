@@ -15,10 +15,10 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc(py::array_t<fl
             bool flag = false;
             int start = -1;
             for (py::ssize_t col = 0; col < data.shape(1); ++col){
-                if (data(row, col, cat) > 0.5){
+                if (data(row, col, cat) >= 0.5){
                     if (!flag) {
                         flag = true;
-                        start = col;
+                        start = (int)col;
                     }
                 } else {
                     if (flag) {
