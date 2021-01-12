@@ -68,8 +68,8 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc2(py::array_t<f
     return results;
 }
 
-// with scale
-std::vector<std::map<int, std::vector<std::vector<int> > > > proc2_with_scale(py::array_t<float> input, int scale){
+// x20
+std::vector<std::map<int, std::vector<std::vector<int> > > > proc_x20(std::vector<float> &input){
     auto data = input.unchecked<3>();
     std::vector<std::map<int, std::vector<std::vector<int> > > > results(3);
     for (py::ssize_t cat = 0; cat < 3; ++cat){
@@ -85,15 +85,15 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc2_with_scale(py
                 } else {
                     if (flag) {
                         flag = false;
-                        for (int scale_f = 0; scale_f < scale; ++scale_f){
-                            results[cat][scale * row + scale_f].push_back(std::vector<int>{scale * start, scale * (int)(col) - 1});
+                        for (int scale_f=0; scale_f<20; ++scale_f){
+                            results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(col) - 1});
                         }
                     }
                 }
             }
             if (flag) {
-                for (int scale_f = 0; scale_f < scale; ++scale_f){
-                    results[cat][scale * row + scale_f].push_back(std::vector<int>{scale * start, scale * (int)(data.shape(1)) - 1});
+                for (int scale_f=0; scale_f<20; ++scale_f){
+                    results[cat][20*row+scale_f].push_back(std::vector<int>{20*start, 20*(int)(data.shape(1)) - 1});
                 }
             }
         }
@@ -104,6 +104,6 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc2_with_scale(py
 PYBIND11_MODULE(signate131, m){
     m.doc() = "signate131 postprocess implementations";
     m.def("proc", &proc, "naive");
-    m.def("proc2", &proc2, "x20");
-    m.def("proc2_with_scale", &proc2_with_scale, "with scale");
+    m.def("proc2", &proc2, "x20 (legacy)");
+    m.def("proc_x20", &proc_x20, "x20 rename");
 }
