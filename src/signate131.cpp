@@ -171,5 +171,5 @@ PYBIND11_MODULE(signate131, m){
     m.def("proc2", &proc2, "(legacy)");
     m.def("proc_x20", &proc_x20, "x20");
     m.def("proc_x20each", &proc_x20each, "x20 each");
-    m.def("proc_x20_non_negative", &proc_x20, "x20 non negative (for sigmoid logits)");
+    m.def("proc_x20_non_negative", &proc_x20_non_negative, "x20 non negative (for sigmoid logits)");
 }
