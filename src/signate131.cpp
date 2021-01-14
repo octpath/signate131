@@ -262,6 +262,39 @@ std::vector<std::map<int, std::vector<std::vector<int> > > > proc_x30_non_negati
     return results;
 }
 
+// x15 non_negative
+std::vector<std::map<int, std::vector<std::vector<int> > > > proc_x15_non_negative(py::array_t<float> input){
+    auto data = input.unchecked<3>();
+    std::vector<std::map<int, std::vector<std::vector<int> > > > results(3);
+    for (py::ssize_t cat = 0; cat < 3; ++cat){
+        for (py::ssize_t row = 0; row < data.shape(0); ++row){
+            bool flag = false;
+            int start = -1;
+            for (py::ssize_t col = 0; col < data.shape(1); ++col){
+                if (data(row, col, cat) >= 0.){
+                    if (!flag) {
+                        flag = true;
+                        start = col;
+                    }
+                } else {
+                    if (flag) {
+                        flag = false;
+                        for (int scale_f=0; scale_f<15; ++scale_f){
+                            results[cat][15*row+scale_f].push_back(std::vector<int>{15*start, 15*(int)(col) - 1});
+                        }
+                    }
+                }
+            }
+            if (flag) {
+                for (int scale_f=0; scale_f<15; ++scale_f){
+                    results[cat][15*row+scale_f].push_back(std::vector<int>{15*start, 15*(int)(data.shape(1)) - 1});
+                }
+            }
+        }
+    }
+    return results;
+}
+
 PYBIND11_MODULE(signate131, m){
     m.doc() = "signate131 postprocess implementations";
     m.def("proc", &proc, "naive");
@@ -272,4 +305,5 @@ PYBIND11_MODULE(signate131, m){
     m.def("proc_x30", &proc_x30, "x30");
     m.def("proc_x30each", &proc_x30each, "x30 each");
     m.def("proc_x30_non_negative", &proc_x30_non_negative, "x30 non negative (for sigmoid logits)");
+    m.def("proc_x15_non_negative", &proc_x15_non_negative, "x15 non negative (for sigmoid logits)");
 }
